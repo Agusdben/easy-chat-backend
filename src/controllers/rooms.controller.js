@@ -4,6 +4,27 @@ import Room from '../models/room.model'
 class RoomsController {
   rooms = {}
 
+  constructor () {
+    setInterval(() => {
+      this.checkEmptyRooms()
+    }, 180000) // 3 min
+  }
+
+  checkEmptyRooms () {
+    const emptyRooms = []
+    for (const roomName in this.rooms) {
+      const room = this.rooms[roomName]
+      if (room.usersNumber === 0) {
+        emptyRooms.push(roomName)
+        delete this.rooms[roomName]
+      }
+    }
+
+    if (emptyRooms.length > 0) {
+      console.log(`Empty rooms deleted: ${emptyRooms.join(', ')}`)
+    }
+  }
+
   addNewRoom ({ roomName, room }) {
     this.rooms[roomName] = room
   }
@@ -13,7 +34,7 @@ class RoomsController {
       throw new Error('Room already exist')
     }
 
-    if (roomName.length < ROOM_NAME_MIN_LENGTH || roomName.length > ROOM_NAME_MAX_LENGTH) {
+    if (roomName.trim().length < ROOM_NAME_MIN_LENGTH || roomName.trim().length > ROOM_NAME_MAX_LENGTH) {
       throw new Error('Invalid room name')
     }
 
@@ -86,10 +107,6 @@ class RoomsController {
     }
 
     const updatedRoom = new Room({ ...newRoom })
-
-    if (newRoom.usersNumber === 0) {
-      this.removeRoom({ roomName })
-    }
 
     this.rooms[roomName] = updatedRoom
   }

@@ -5,7 +5,7 @@ class MessagesController {
   messages = {}
 
   addMessageToARoom ({ message }) {
-    if (message.trim().length > MAX_MESSAGE_LENGTH || message.trim().length < MIN_MESSAGE_LENGTH) {
+    if (message.message.trim().length > MAX_MESSAGE_LENGTH || message.message.trim().length < MIN_MESSAGE_LENGTH) {
       throw new Error('Invalid message')
     }
 

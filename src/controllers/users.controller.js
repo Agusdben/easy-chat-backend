@@ -31,7 +31,7 @@ class UsersController {
   }
 
   authUser ({ username, id }) {
-    if (username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
+    if (username.trim().length < USERNAME_MIN_LENGTH || username.trim().length > USERNAME_MAX_LENGTH) {
       throw new Error('Invalid username')
     }
 
