@@ -37,6 +37,10 @@ class RoomsController {
       throw new Error('Room already exist')
     }
 
+    if (Object.values(this.rooms).some(r => r.creator.id === creator.id)) {
+      throw new Error('You already have a room')
+    }
+
     if (roomName.trim().length < ROOM_NAME_MIN_LENGTH || roomName.trim().length > ROOM_NAME_MAX_LENGTH) {
       throw new Error('Invalid room name')
     }
