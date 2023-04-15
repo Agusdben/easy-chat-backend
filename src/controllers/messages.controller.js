@@ -1,11 +1,28 @@
-import { MAX_MESSAGE_LENGTH, MIN_MESSAGE_LENGTH } from '../constants/message'
+import { LIMIT_SPAM_MESSAGES, MAX_MESSAGE_LENGTH, MIN_MESSAGE_LENGTH } from '../constants/message'
 import Message from '../models/message.model'
 
 class MessagesController {
   messages = {}
+  usersLastMessagesCount = {}
 
   removeMessagesOfRoom ({ roomName }) {
     delete this.messages[roomName]
+  }
+
+  handleSpamMessages ({ userId }) {
+    const userLastMessages = this.usersLastMessagesCount[userId]
+
+    if (userLastMessages === LIMIT_SPAM_MESSAGES) {
+      throw new Error('Spam detected, relax 🙏')
+    }
+
+    userLastMessages
+      ? this.usersLastMessagesCount[userId] = userLastMessages + 1
+      : this.usersLastMessagesCount[userId] = 1
+
+    setTimeout(() => {
+      this.usersLastMessagesCount[userId] = this.usersLastMessagesCount[userId] - 1
+    }, 8000)
   }
 
   addMessageToARoom ({ message }) {

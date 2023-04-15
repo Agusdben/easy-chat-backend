@@ -94,10 +94,14 @@ io.on('connection', (socket) => {
 
   socket.on('client:send_message', (data) => {
     try {
+      messagesController.handleSpamMessages({ userId: socket.id })
       messagesController.addMessageToARoom({ message: data })
       io.in(data.roomName).emit('server:receive_message', data)
     } catch (error) {
       console.log(error)
+      if (error.message.includes('Spam')) {
+        socket.emit('server:error', error.message)
+      }
     }
   })
 
