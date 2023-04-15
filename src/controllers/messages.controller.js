@@ -22,6 +22,9 @@ class MessagesController {
 
     setTimeout(() => {
       this.usersLastMessagesCount[userId] = this.usersLastMessagesCount[userId] - 1
+      if (this.usersLastMessagesCount[userId] === 0) {
+        delete this.usersLastMessagesCount[userId]
+      }
     }, 8000)
   }
 
