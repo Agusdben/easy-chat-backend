@@ -1,5 +1,6 @@
-import { ROOM_NAME_MAX_LENGTH, ROOM_NAME_MIN_LENGTH } from '../constants/room'
+import { MAX_ROOMS, ROOM_NAME_MAX_LENGTH, ROOM_NAME_MIN_LENGTH } from '../constants/room'
 import Room from '../models/room.model'
+import messagesController from './messages.controller'
 
 class RoomsController {
   rooms = {}
@@ -16,7 +17,8 @@ class RoomsController {
       const room = this.rooms[roomName]
       if (room.usersNumber === 0) {
         emptyRooms.push(roomName)
-        delete this.rooms[roomName]
+        this.removeRoom({ roomName: room.roomName })
+        messagesController.removeMessagesOfRoom({ roomName: room.roomName })
       }
     }
 
@@ -30,6 +32,7 @@ class RoomsController {
   }
 
   createRoom ({ roomName, creator }) {
+    console.log(roomName)
     if (this.rooms[roomName] !== undefined) {
       throw new Error('Room already exist')
     }
@@ -42,6 +45,10 @@ class RoomsController {
       throw new Error('User is not authenticated')
     }
 
+    if (Object.values(this.rooms).length === MAX_ROOMS) {
+      throw new Error('Maximum number of rooms reached')
+    }
+
     const newRoom = new Room({ roomName, creator, users: [], usersNumber: 0 })
 
     this.addNewRoom({ roomName, room: newRoom })
@@ -49,6 +56,7 @@ class RoomsController {
 
   removeRoom ({ roomName }) {
     delete this.rooms[roomName]
+    console.log({ roomName })
   }
 
   getRooms () {

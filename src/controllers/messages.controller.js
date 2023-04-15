@@ -4,6 +4,10 @@ import Message from '../models/message.model'
 class MessagesController {
   messages = {}
 
+  removeMessagesOfRoom ({ roomName }) {
+    delete this.messages[roomName]
+  }
+
   addMessageToARoom ({ message }) {
     if (message.message.trim().length > MAX_MESSAGE_LENGTH || message.message.trim().length < MIN_MESSAGE_LENGTH) {
       throw new Error('Invalid message')
