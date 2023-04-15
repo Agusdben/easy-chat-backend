@@ -5,20 +5,4 @@ export default class Message {
     this.roomName = roomName
     this.date = date
   }
-
-  getAuthor () {
-    return this.author
-  }
-
-  getMessage () {
-    return this.message
-  }
-
-  getRoom () {
-    return this.room
-  }
-
-  getTime () {
-    return this.time
-  }
 }
