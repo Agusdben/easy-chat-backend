@@ -4,8 +4,7 @@ import socketIOClient from 'socket.io-client'
 import express from 'express'
 
 describe('Testing user authentication', () => {
-  let io, serverSocket, clientSocket
-  let app, server
+  let io, clientSocket, app, server
 
   beforeAll((done) => {
     app = express()
@@ -15,9 +14,6 @@ describe('Testing user authentication', () => {
     server.listen(() => {
       const PORT = process.env.PORT || 3003
       clientSocket = socketIOClient(`http://localhost:${PORT}`)
-      io.on('connection', (socket) => {
-        serverSocket = socket
-      })
 
       clientSocket.on('connect', done)
     })
