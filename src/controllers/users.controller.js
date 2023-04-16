@@ -42,8 +42,6 @@ class UsersController {
     const user = new User({ username, id })
 
     this.addUser({ username, user })
-
-    return user
   }
 }
 
