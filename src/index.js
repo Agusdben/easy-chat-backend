@@ -1,12 +1,16 @@
 import express from 'express'
 import http from 'http'
 import cors from 'cors'
+import { config } from 'dotenv'
 import { Server as WebSocketServer } from 'socket.io'
 import userController from './controllers/users.controller'
 import roomController from './controllers/rooms.controller'
 import messagesController from './controllers/messages.controller'
 
-const WHITE_LIST = ['http://localhost:3000', 'http://192.168.0.107:3000', 'http://192.168.0.210:3000']
+config()
+
+const WHITE_LIST = process.env.WHITE_LIST.split(',')
+
 const app = express()
 const PORT = process.env.PORT || 3003
 
