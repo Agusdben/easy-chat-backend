@@ -32,7 +32,6 @@ class RoomsController {
   }
 
   createRoom ({ roomName, creator }) {
-    console.log(roomName)
     if (this.rooms[roomName] !== undefined) {
       throw new Error('Room already exist')
     }
@@ -45,7 +44,7 @@ class RoomsController {
       throw new Error('Invalid room name')
     }
 
-    if (creator === '') {
+    if (creator.id === '' || creator.username === '') {
       throw new Error('User is not authenticated')
     }
 
